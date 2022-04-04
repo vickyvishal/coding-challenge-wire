@@ -32,7 +32,45 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+
+
+.main-contents {
+  display: flex;
+  margin-top: 20px;
+
+  .class-content-area {
+    width: 50%;
+    margin-left: 8%;
+  }
+
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+
+    .class-left-sidebar {
+      margin: auto;
+      margin-bottom: 20px;
+      width: 70%;
+      .MuiBox-root{
+        max-width: 80%;
+        margin: auto;
+      }
+
+    }
+
+    .class-content-area {
+      width: 70%;
+      margin-left: 0%;
+      margin: auto;
+    }
+  }
+
+
+
 }
