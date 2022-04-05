@@ -105,7 +105,7 @@ export const PackageList = () => {
                     </TableHead>
                     <TableBody>
                         {
-                            searchedList[0].length > 0 && searchedList[currentPage - 1].map((bowerPackage: PackageModel) => {
+                            searchedList[0] && searchedList[0].length > 0 && searchedList[currentPage - 1].map((bowerPackage: PackageModel) => {
                                 return <TableRow key={bowerPackage.name}>
                                     <TableCell>{bowerPackage.name}</TableCell>
                                     <TableCell>{getOwnerName(bowerPackage.repository_url)}</TableCell>
