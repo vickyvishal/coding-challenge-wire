@@ -4,7 +4,7 @@ export interface PackageModel {
     "deprecation_reason": string | null,
     "description": string,
     "forks": number,
-    "homepage": "https://getbootstrap.com/",
+    "homepage": string,
     "keywords": Array<string>,
     "language": string,
     "latest_download_url": string

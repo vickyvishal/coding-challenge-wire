@@ -7,32 +7,13 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { BOWER_SEARCH_API } from '../constants/constant'
 import { PackageModel } from '../models/PackageModel';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { createChunks, getOwnerName, initialAPICall, searchAsPerQueryString } from '../helpers/function';
 
-const getOwnerName = (url: string) => {
-    let owner = url.split("/")[3]
-    return owner
-}
 
-const createChunks = (packageModels: PackageModel[], starSorter: boolean) => {
-    console.log(packageModels, starSorter)
-    let chunks: PackageModel[][] = []
-    let sorted: PackageModel[] = []
-    if (starSorter) {
-        sorted = packageModels.sort((a, b) => (a.stars < b.stars) ? 1 : ((b.stars < a.stars) ? -1 : 0))
-    } else {
-        sorted = packageModels.sort((a, b) => (a.stars > b.stars) ? 1 : ((b.stars > a.stars) ? -1 : 0))
-    }
-    while (sorted.length) {
-        chunks.push(sorted.splice(0, 5));
-    }
-    return chunks
-}
 
 
 export const PackageList = () => {
@@ -42,21 +23,17 @@ export const PackageList = () => {
     const [isLoading, setIsLoading] = useState<boolean>(true)
     const [starSorter, setStarSorter] = useState<boolean>(true)
 
-    const initialAPICall = () => {
-        axios.get(BOWER_SEARCH_API).then((res: any) => {
-            setSearchedList(createChunks(res.data, starSorter))
-        }).catch((err) => console.log(err))
-    }
-
-
     useEffect(() => {
         setIsLoading(true)
-        initialAPICall();
+        initialAPICall().then((res: any) => {
+            setSearchedList(createChunks(res.data, starSorter))
+
+        }).catch((err) => console.log(err))
     }, [])
 
     useEffect(() => {
         if (queryString !== "") {
-            axios.get(BOWER_SEARCH_API + `?q=${queryString}`).then((res: any) => {
+            searchAsPerQueryString(queryString).then((res: any) => {
                 setSearchedList(createChunks(res.data, starSorter))
             }).catch((err) => console.log(err))
         } else {
